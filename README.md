@@ -6,7 +6,7 @@ Clerk is a pseudo-static blog engine on Node.js. It uses plain text.
 Easy to configure. Supports npm plugins.
   
 # Install
-1. Clone: `git clone https://github.com/vanya-klimenko/clerk`.
+1. Clone: `git clone https://github.com/vanya-klimenko/clerk.git`.
 2. Install dependencies: `npm install`.
 4. Install nginx on your machine.
 3. Configure a nginx tunnel to localhost: `cd /etc/nginx`, `nano sites-available/clerk.conf`. Configuration file should look like this:
