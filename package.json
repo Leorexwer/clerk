@@ -1,0 +1,28 @@
+{
+  "name": "clerk",
+  "version": "1.0.0",
+  "description": "semi-static blog engine",
+  "main": "clerk.js",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "compression": "~1.6.2",
+    "express": "^4.13.4",
+    "handlebars": "^4.0.5",
+    "handlebars-intl": "^1.1.2",
+    "markdown-it": "^6.0.5",
+    "markdown-it-footnote": "~2.0.0",
+    "promise": "^7.0.4",
+    "q-io": "^1.13.2",
+    "rss": "~1.2.1",
+    "sugar": "~1.4.1",
+    "typograf": "^5.3.2",
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "typograf": "^5.3.2"
+  },
+  "scripts": {
+    "start": "nodemon ./clerk.js"
+  },
+  "license": "MIT"
+}

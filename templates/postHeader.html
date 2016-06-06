@@ -1,0 +1,6 @@
+{{#if Link}}
+    <h2 class="article-title title-link"><a class="postTitle" href="{{Link}}">{{Title}}</a> <a class="permalink" href="{{relativeLink}}">∞</a></h2>
+{{else}}
+    <h2 class="article-title"><a class="postTitle" href="{{relativeLink}}">{{Title}}</a></h2>
+{{/if}}
+    <h3 class="article-date">{{formatPostDate Date}}</h3>
