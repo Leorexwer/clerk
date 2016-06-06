@@ -54,4 +54,5 @@ Cache should automatically rebuild itself. If not, clean the cache: /flush.
 1. Pagination is probably broken.
 2. No built-in search (you can use Google's).
 3. No tags (there won't be any).
+  
 If you find a not-fun-at-all thing #4, feel free to drop me a line: v@vanyaklimenko.ru.
