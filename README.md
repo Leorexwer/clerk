@@ -1,5 +1,6 @@
-# Clerk.js, Blog Engine
+# Clerk
 ![Клерк](http://i.imgur.com/PCb721V.png)
+  
 Clerk is a pseudo-static blog engine on Node.js. It uses plain text.
 
 Easy to configure. Supports npm plugins.
