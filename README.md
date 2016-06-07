@@ -48,7 +48,6 @@ Cache should automatically rebuild itself. If not, clean the cache: /flush.
 2. All pages are being typograped.
 3. You can edit 404 and index pages. They're located inside the posts folder, too, don't delete them.
 4. RSS works.
-5. Try to add `.txt` after this page's url.
   
 # Not-fun-at-all Things
 1. Pagination is probably broken.
