@@ -17,7 +17,6 @@ var markdownit = require('markdown-it')({
 }).use(require('markdown-it-footnote'));
 var Rss = require('rss');
 var Handlebars = require('handlebars');
-var Handlebars = require('handlebars');
 
 var app = express();
 app.use(compress());
@@ -247,9 +246,12 @@ function init() {
 					}
 						else return '';
 				});
-				Handlebars.registerHelper('formatTimestamp', function (date) {
-						return new Date(date);
-				});
+        Handlebars.registerHelper('formatPostDate', function (date) {
+            if (date !== undefined) {
+            return new Handlebars.SafeString(new Date(date).format('{dd}.{MM}.{yyyy}'));
+          }
+            else return '';
+        });
         postHeaderTemplate = Handlebars.compile(data);
     });
 
@@ -504,12 +506,12 @@ app.get('/drafts/:slug', function (request, response) {
 // он у каждого свой: раз — и готово
 app.get('/:slug', function (request, response) {
     if (isNaN(request.params.slug)) {
-		var file = postsRoot + request.params.slug;
-		loadAndSendMarkdownFile(file, response);
+		    var file = postsRoot + request.params.slug;
+		    loadAndSendMarkdownFile(file, response);
     } else if (request.params.slug >= 2000) {
         sendYearListing(request, response);
     } else {
-		send404(response, request.params.slug);
+		    send404(response, request.params.slug);
     }
 });
 

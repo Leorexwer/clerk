@@ -19,10 +19,11 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
-    "typograf": "^5.3.2"
+    "standard": "^7.1.2",
   },
   "scripts": {
-    "start": "nodemon ./clerk.js"
+    "start": "nodemon ./clerk.js",
+    "lint": "standard"
   },
   "license": "MIT"
 }

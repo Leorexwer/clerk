@@ -1,10 +1,10 @@
-# Clerk
-![Клерк](http://i.imgur.com/PCb721V.png)
-  
+# Clerk [![Build Status](https://travis-ci.org/vanya-klimenko/clerk.svg?branch=master)](https://travis-ci.org/vanya-klimenko/clerk)
+![Clerk](http://i.imgur.com/PCb721V.png)
+
 Clerk is a pseudo-static blog engine on Node.js. It uses plain text.
 
 Easy to configure. Supports npm plugins.
-  
+
 # Install
 1. Clone: `git clone https://github.com/vanya-klimenko/clerk.git`.
 2. Install dependencies: `npm install`.
@@ -40,18 +40,18 @@ Link: http://ya.ru
 А тут у меня текст заметки.
 ```
 Link tag is not required and turn a note into a linked post, Gruber-style.
-   
+
 Cache should automatically rebuild itself. If not, clean the cache: /flush.
-  
+
 # Fun Things
 1. You can make a symbolic link between posts folder and your Dropbox. Cloud blogging!
 2. All pages are being typograped.
 3. You can edit 404 and index pages. They're located inside the posts folder, too, don't delete them.
 4. RSS works.
-  
+
 # Not-fun-at-all Things
 1. Pagination is probably broken.
 2. No built-in search (you can use Google's).
 3. No tags (there won't be any).
-  
+
 If you find a not-fun-at-all thing #4, feel free to drop me a line: v@vanyaklimenko.ru.
