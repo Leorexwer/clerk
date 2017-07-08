@@ -518,7 +518,7 @@ app.get('/:slug', function (request, response) {
 
 // HERE COMES DAT BOI
 init();
-var port = Number(process.env.PORT || 80);
+var port = Number(process.env.PORT || 5000);
 server.listen(port, function () {
    console.log('HERE ON PORT %s COMES DAT BOI', server.address().port);
 });
