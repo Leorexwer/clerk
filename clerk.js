@@ -32,6 +32,8 @@ var postRegex = /^(.\/)?posts\/(?!index|404)(\w|-|_\+)*\.txt?$/;
 var footnoteAnchorRegex = /[#"]fn\d+/g;
 var footnoteIdRegex = /fnref\d+/g;
 var cacheResetTimeInMillis = 900000;
+var articleTemplateStart = '<article class="article">'
+var articleTemplateEnd = '</article>'
 
 var renderedPosts = {};
 var renderedRss = {};
@@ -152,8 +154,10 @@ function generateHtmlAndMetadataForLines(lines, file) {
 		unwrappedBody: performMetadataReplacements(metadata, markdownit.render(lines.body)),
 		html: function () {
 			return this.header +
-				this.postHeader +
+				'<article class="article">' +
+                this.postHeader +
 				this.unwrappedBody +
+                '</article>' +
 				this.footer;
 		}
 	};
@@ -372,8 +376,8 @@ function generateRss(request, feedUrl, linkGenerator, completion) {
 		feed_url: siteMetadata.SiteRoot + feedUrl,
 		site_url: siteMetadata.SiteRoot,
 		image_url: siteMetadata.SiteRoot + '/images/favicon.png',
-		author: 'Ваня Клименко',
-		copyright: new Date().getFullYear() + ' Ваня Клименко',
+		author: 'VK Like Abuser',
+		copyright: new Date().getFullYear() + ' VK Like Abuser',
 		language: 'ru',
 		pubDate: new Date().toString(),
 		ttl: '60'
