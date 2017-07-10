@@ -98,25 +98,29 @@ a.permalink:hover {
 
 .header h1 {
   font-size: 15px;
+  display: inline-block;
   line-height: 1.5em;
   top: 0;
   text-align: center;
   padding-top: 2px;
   margin-bottom: .5em;
-  font-weight: normal;
 }
 
 .header h1 a {
   display: block;
   width: 100%;
   color: #fff;
-  padding: 10px 0;
+  padding: 8px 10px;
 }
 
 .header h1 a span {
   width: 100%;
   display: block;
   line-height: 1.3em;
+}
+
+h1 a:hover {
+  text-decoration: underline;
 }
 
 .articles h1 {
@@ -195,7 +199,37 @@ img {
   margin: 0;
 }
 
+.button {
+    text-decoration: none;
+    display: inline-block;
+    float: right;
+    background: url('https://vkabuser.ru/assets/chrome.svg') no-repeat;
+    background-size: 20px;
+    background-position: 10px center;
+    background-color: rgba(255, 255, 255, .2);
+    color: #fff;
+    padding: 6px 10px 6px 40px;
+    margin: 7px 10px;
+    display: inline-block;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color .2s;
+}
+
+.button:hover {
+    background-color: #72C460;
+    transition: none;
+    color: #fff !important;
+}
+
 @media (max-width: 700px) {
+  .button {
+    display: none;
+  }
+  .header h1 {
+    width: 100%;
+  }
   .article {
     border-radius: 0;
     margin-left: 0;

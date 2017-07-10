@@ -1,7 +1,0 @@
-Title: It works
-Date: 15 Feb 2015
-
-Todo: configure dropbox sync or else
-fix rss
-
-![](/img/clerk.png)
