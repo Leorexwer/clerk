@@ -1,5 +1,0 @@
-@@ Title=Home
-@@ BodyClass=homepage
-@@ DayTemplate=<section class="day"><section class="articles">{{#each articles}}{{> article}}{{/each}}</section></section>
-@@ ArticlePartial=<article class="article">{{{postHeader}}}{{{unwrappedBody}}}</article>
-@@ FooterTemplate=<section class="pagination">{{#if prevPage}}<a href="/page/{{prevPage}}">↑ Новее</a>{{/if}}{{#if nextPage}}<a href="/page/{{nextPage}}">↓ Старее</a>{{/if}}</section>
