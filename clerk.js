@@ -12,8 +12,8 @@ var Typograf = require('typograf'),
     tp = new Typograf({lang: 'ru'});
 var _ = require('underscore');
 var markdownit = require('markdown-it')({
-	html: true,
-	xhtmlOut: true
+    html: true,
+    xhtmlOut: true
 }).use(require('markdown-it-footnote'));
 var Rss = require('rss');
 var Handlebars = require('handlebars');
@@ -22,6 +22,9 @@ var app = express();
 app.use(compress());
 app.use(express.static('assets'));
 var server = http.createServer(app);
+
+
+const utils = require('./utils')
 
 var postsRoot = './posts/';
 var templateRoot = './templates/';
@@ -71,17 +74,17 @@ function addRenderedPostToCache(file, postData) {
 
 // separate the metadata from the body
 function getLinesFrotxtata(data) {
-	data = data.replace(/\r/g, '');
-	var lines = data.lines();
-	var metadataEnds = _.findIndex(lines, function (line) {
-		 return line.trim().length === 0;
-	});
-	metadataEnds = metadataEnds === -1 ? lines.length : metadataEnds;
+    data = data.replace(/\r/g, '');
+    var lines = data.lines();
+    var metadataEnds = _.findIndex(lines, function (line) {
+         return line.trim().length === 0;
+    });
+    metadataEnds = metadataEnds === -1 ? lines.length : metadataEnds;
 
-	return {
-		metadata: lines.slice(0, metadataEnds),
-		body: tp.execute(lines.slice(metadataEnds).join('\n'))
-	};
+    return {
+        metadata: lines.slice(0, metadataEnds),
+        body: tp.execute(lines.slice(metadataEnds).join('\n'))
+    };
 }
 
 function getLinesFromPost(file) {
@@ -103,14 +106,14 @@ function parseMetadata(lines) {
             retVal[line.first(firstIndex)] = line.from(firstIndex + 1);
         } else if (line.has(':')) {
             line = line.compact();
-			var firstIndex = line.indexOf(':');
-			retVal[line.first(firstIndex)] = line.from(firstIndex + 2);
-		}
+            var firstIndex = line.indexOf(':');
+            retVal[line.first(firstIndex)] = line.from(firstIndex + 2);
+        }
     });
 
-	if (Object.has(retVal, "Description")) {
-		retVal["Description"] = retVal["Description"].replace(/"/g, '&quot;')
-	}
+    if (Object.has(retVal, "Description")) {
+        retVal["Description"] = retVal["Description"].replace(/"/g, '&quot;')
+    }
 
     Object.merge(retVal, siteMetadata, false, function (key, targetVal, sourceVal) {
         return targetVal;
@@ -138,29 +141,29 @@ function performMetadataReplacements(replacements, haystack) {
 }
 
 function generateHtmlAndMetadataForLines(lines, file) {
-	var metadata = parseMetadata(lines.metadata);
-	if (typeof(file) !== 'undefined') {
-		metadata.relativeLink = externalFilenameForFile(file);
-		if (postRegex.test(file)) {
-			metadata.BodyClass = 'post';
-		}
-	}
+    var metadata = parseMetadata(lines.metadata);
+    if (typeof(file) !== 'undefined') {
+        metadata.relativeLink = externalFilenameForFile(file);
+        if (postRegex.test(file)) {
+            metadata.BodyClass = 'post';
+        }
+    }
 
-	return {
-		metadata: metadata,
-		header: performMetadataReplacements(metadata, headerSource),
-		footer: performMetadataReplacements(metadata, footerSource),
-		postHeader:  performMetadataReplacements(metadata, postHeaderTemplate(metadata)),
-		unwrappedBody: performMetadataReplacements(metadata, markdownit.render(lines.body)),
-		html: function () {
-			return this.header +
-				'<article class="article">' +
+    return {
+        metadata: metadata,
+        header: performMetadataReplacements(metadata, headerSource),
+        footer: performMetadataReplacements(metadata, footerSource),
+        postHeader:  performMetadataReplacements(metadata, postHeaderTemplate(metadata)),
+        unwrappedBody: performMetadataReplacements(metadata, markdownit.render(lines.body)),
+        html: function () {
+            return this.header +
+                '<article class="article">' +
                 this.postHeader +
-				this.unwrappedBody +
+                this.unwrappedBody +
                 '</article>' +
-				this.footer;
-		}
-	};
+                this.footer;
+        }
+    };
 }
 
 function generateHtmlAndMetadataForFile(file) {
@@ -198,8 +201,8 @@ function allPostsSortedAndGrouped(completion) {
                 var articleFiles = groupedFiles[key];
                 var articles = [];
                 _.each(articleFiles, function (file) {
-					if (!file.endsWith('redirect')) {
-						articles.push(generateHtmlAndMetadataForFile(file));
+                    if (!file.endsWith('redirect')) {
+                        articles.push(generateHtmlAndMetadataForFile(file));
                     }
                 });
 
@@ -207,7 +210,7 @@ function allPostsSortedAndGrouped(completion) {
                     return Date.create(article.metadata.Date);
                 }).reverse();
                 if (articles.length > 0) {
-                	retVal.push({date: key, articles: articles});
+                    retVal.push({date: key, articles: articles});
                 }
             });
 
@@ -243,13 +246,13 @@ function init() {
         });
     });
     loadHeaderFooter('footer.html', function (data) { footerSource = data; });
-		loadHeaderFooter('postHeader.html', function (data) {
-				Handlebars.registerHelper('formatPostDate', function (date) {
-						if (date !== undefined) {
-						return new Handlebars.SafeString(new Date(date).format('{dd}.{MM}.{yyyy}'));
-					}
-						else return '';
-				});
+        loadHeaderFooter('postHeader.html', function (data) {
+                Handlebars.registerHelper('formatPostDate', function (date) {
+                        if (date !== undefined) {
+                        return new Handlebars.SafeString(new Date(date).format('{dd}.{MM}.{yyyy}'));
+                    }
+                        else return '';
+                });
         Handlebars.registerHelper('formatPostDate', function (date) {
             if (date !== undefined) {
             return new Handlebars.SafeString(new Date(date).format('{dd}.{MM}.{yyyy}'));
@@ -265,7 +268,7 @@ function init() {
 }
 
 function generateHtmlForFile(file) {
-	var fileData = generateHtmlAndMetadataForFile(file);
+    var fileData = generateHtmlAndMetadataForFile(file);
     return fileData.html();
 }
 
@@ -295,7 +298,7 @@ function allPostsPaginated(completion) {
 // route helpers
 
 function send404(response, file) {
-	console.log('404: ' + file);
+    console.log('404: ' + file);
     response.status(404).send(generateHtmlForFile('posts/404.txt'));
 }
 
@@ -310,7 +313,7 @@ function watchPostsUpdate() {
 }
 
 function loadAndSendMarkdownFile(file, response) {
-	if (file.endsWith('.txt')) {
+    if (file.endsWith('.txt')) {
         console.log('Sending source file: ' + file);
         fs.exists(file, function (exists) {
             if (exists) {
@@ -331,27 +334,27 @@ function loadAndSendMarkdownFile(file, response) {
         console.log('Sending cached: ' + file);
         response.status(200).send(fetchFromCache(file).html());
     } else {
-		var found = false;
+        var found = false;
         if (fs.existsSync(file + '.txt')) {
-			found = true;
-			console.log('Sending file: ' + file);
-			var html = generateHtmlForFile(file);
-			response.status(200).send(html);
+            found = true;
+            console.log('Sending file: ' + file);
+            var html = generateHtmlForFile(file);
+            response.status(200).send(html);
         } else if (fs.existsSync(file + '.redirect')) {
-			var data = fs.readFileSync(file + '.redirect', {encoding: 'UTF8'});
-			if (data.length > 0) {
-				var parts = data.split('\n');
-				if (parts.length >= 2) {
-					found = true;
-					console.log('Redirecting to: ' + parts[1]);
-					response.redirect(parseInt(parts[0], 10), parts[1]);
-				}
-			}
+            var data = fs.readFileSync(file + '.redirect', {encoding: 'UTF8'});
+            if (data.length > 0) {
+                var parts = data.split('\n');
+                if (parts.length >= 2) {
+                    found = true;
+                    console.log('Redirecting to: ' + parts[1]);
+                    response.redirect(parseInt(parts[0], 10), parts[1]);
+                }
+            }
         }
 
         if (!found) {
-	        send404(response, file);
-			return;
+            send404(response, file);
+            return;
         }
     }
 }
@@ -370,81 +373,81 @@ function baseRouteHandler(file, sender, generator) {
 }
 
 function generateRss(request, feedUrl, linkGenerator, completion) {
-	var feed = new Rss({
-		title: siteMetadata.SiteTitle,
-		description: 'Posts to ' + siteMetadata.SiteTitle,
-		feed_url: siteMetadata.SiteRoot + feedUrl,
-		site_url: siteMetadata.SiteRoot,
-		image_url: siteMetadata.SiteRoot + '/images/favicon.png',
-		author: 'VK Like Abuser',
-		copyright: new Date().getFullYear() + ' VK Like Abuser',
-		language: 'ru',
-		pubDate: new Date().toString(),
-		ttl: '60'
-	});
+    var feed = new Rss({
+        title: siteMetadata.SiteTitle,
+        description: 'Posts to ' + siteMetadata.SiteTitle,
+        feed_url: siteMetadata.SiteRoot + feedUrl,
+        site_url: siteMetadata.SiteRoot,
+        image_url: siteMetadata.SiteRoot + '/images/favicon.png',
+        author: 'VK Like Abuser',
+        copyright: new Date().getFullYear() + ' VK Like Abuser',
+        language: 'ru',
+        pubDate: new Date().toString(),
+        ttl: '60'
+    });
 
-	var max = 10;
-	var i = 0;
-	allPostsSortedAndGrouped(function (postsByDay) {
-		postsByDay.forEach(function (day) {
-			day.articles.forEach(function (article) {
-				if (i < max) {
-					i += 1;
-					feed.item({
-						title: article.metadata.Title,
-						date: article.metadata.Date,
-						url: linkGenerator(article),
-						guid: externalFilenameForFile(article.file, request),
-						description: article.unwrappedBody.replace(/<script[\s\S]*?<\/script>/gm, "")
-					});
-				}
-			});
-		});
+    var max = 10;
+    var i = 0;
+    allPostsSortedAndGrouped(function (postsByDay) {
+        postsByDay.forEach(function (day) {
+            day.articles.forEach(function (article) {
+                if (i < max) {
+                    i += 1;
+                    feed.item({
+                        title: article.metadata.Title,
+                        date: article.metadata.Date,
+                        url: linkGenerator(article),
+                        guid: externalFilenameForFile(article.file, request),
+                        description: article.unwrappedBody.replace(/<script[\s\S]*?<\/script>/gm, "")
+                    });
+                }
+            });
+        });
 
-		completion({
-			date: new Date(),
-			rss: feed.xml()
-		});
-	});
+        completion({
+            date: new Date(),
+            rss: feed.xml()
+        });
+    });
 }
 
 function homepageBuilder(page, completion, redirect) {
-	var indexInfo = generateHtmlAndMetadataForFile(postsRoot + 'index.txt');
-	var footnoteIndex = 0;
+    var indexInfo = generateHtmlAndMetadataForFile(postsRoot + 'index.txt');
+    var footnoteIndex = 0;
 
-	Handlebars.registerPartial('article', indexInfo.metadata.ArticlePartial);
-	var dayTemplate = Handlebars.compile(indexInfo.metadata.DayTemplate);
-	var footerTemplate = Handlebars.compile(indexInfo.metadata.FooterTemplate);
+    Handlebars.registerPartial('article', indexInfo.metadata.ArticlePartial);
+    var dayTemplate = Handlebars.compile(indexInfo.metadata.DayTemplate);
+    var footerTemplate = Handlebars.compile(indexInfo.metadata.FooterTemplate);
 
-	var bodyHtml = '';
-	allPostsPaginated(function (pages) {
-		if (page < 0 || page > pages.length) {
-			redirect(pages.length > 1 ? '/page/' + pages.length : '/');
-			return;
-		}
-		var days = pages[page - 1].days;
-		days.forEach(function (day) {
-			bodyHtml += dayTemplate(day);
-		});
+    var bodyHtml = '';
+    allPostsPaginated(function (pages) {
+        if (page < 0 || page > pages.length) {
+            redirect(pages.length > 1 ? '/page/' + pages.length : '/');
+            return;
+        }
+        var days = pages[page - 1].days;
+        days.forEach(function (day) {
+            bodyHtml += dayTemplate(day);
+        });
 
-		var footerData = {};
-		if (page > 1) {
-			footerData.prevPage = page - 1;
-		}
-		if (pages.length > page) {
-			footerData.nextPage = page + 1;
-		}
+        var footerData = {};
+        if (page > 1) {
+            footerData.prevPage = page - 1;
+        }
+        if (pages.length > page) {
+            footerData.nextPage = page + 1;
+        }
 
-		var fileData = generateHtmlAndMetadataForFile(postsRoot + 'index.txt');
-		var metadata = fileData.metadata;
-		var header = fileData.header;
-		var titleBegin = header.indexOf('<title>') + "<title>".length;
-		var titleEnd = header.indexOf('</title>');
-		header = header.substring(0, titleBegin) + metadata.SiteTitle + header.substring(titleEnd);
-		bodyHtml = performMetadataReplacements(metadata, bodyHtml);
-		var fullHtml = header + bodyHtml + footerTemplate(footerData) + footerSource;
-		completion(fullHtml);
-	});
+        var fileData = generateHtmlAndMetadataForFile(postsRoot + 'index.txt');
+        var metadata = fileData.metadata;
+        var header = fileData.header;
+        var titleBegin = header.indexOf('<title>') + "<title>".length;
+        var titleEnd = header.indexOf('</title>');
+        header = header.substring(0, titleBegin) + metadata.SiteTitle + header.substring(titleEnd);
+        bodyHtml = performMetadataReplacements(metadata, bodyHtml);
+        var fullHtml = header + bodyHtml + footerTemplate(footerData) + footerSource;
+        completion(fullHtml);
+    });
 }
 
 // время заполночь
@@ -459,8 +462,8 @@ app.get('/', function (request, response) {
             response.redirect('/');
             return;
         } else {
-        	response.redirect('/page/' + page);
-        	return;
+            response.redirect('/page/' + page);
+            return;
         }
     }
 
@@ -468,7 +471,7 @@ app.get('/', function (request, response) {
         response.status(200).send(cachedData.body);
     }, function (completion) {
         homepageBuilder(page, completion, function (destination) {
-        	response.redirect(destination);
+            response.redirect(destination);
         });
     });
 });
@@ -480,18 +483,18 @@ app.get('/rss', function (request, response) {
     response.type('application/rss+xml');
 
     if (typeof(renderedRss.date) === 'undefined' || new Date().getTime() - renderedRss.date.getTime() > 3600000) {
-	    generateRss(request, '/rss', function (article) {
-			if (typeof(article.metadata.Link) !== 'undefined') {
-				return article.metadata.Link;
-			}
-			return externalFilenameForFile(article.file, request);
-		}, function (rss) {
-			renderedRss = rss;
-			response.status(200).send(renderedRss.rss);
-		});
-	} else {
-		response.status(200).send(renderedRss.rss);
-	}
+        generateRss(request, '/rss', function (article) {
+            if (typeof(article.metadata.Link) !== 'undefined') {
+                return article.metadata.Link;
+            }
+            return externalFilenameForFile(article.file, request);
+        }, function (rss) {
+            renderedRss = rss;
+            response.status(200).send(renderedRss.rss);
+        });
+    } else {
+        response.status(200).send(renderedRss.rss);
+    }
 });
 
 // второй выбор мне: стряхнуть пыль, сорваться
@@ -503,21 +506,33 @@ app.get('/flush', function (request, response) {
 
 // а про третий путь не скажу ни слова
 app.get('/drafts/:slug', function (request, response) {
-		var file = postsRoot + '/drafts/' + request.params.slug;
-		loadAndSendMarkdownFile(file, response);
+        var file = postsRoot + '/drafts/' + request.params.slug;
+        loadAndSendMarkdownFile(file, response);
 });
 
 // он у каждого свой: раз — и готово
 app.get('/:slug', function (request, response) {
     if (isNaN(request.params.slug)) {
-		    var file = postsRoot + request.params.slug;
-		    loadAndSendMarkdownFile(file, response);
+            var file = postsRoot + request.params.slug;
+            loadAndSendMarkdownFile(file, response);
     } else if (request.params.slug >= 2000) {
         sendYearListing(request, response);
     } else {
-		    send404(response, request.params.slug);
+            send404(response, request.params.slug);
     }
 });
+
+
+app.get('/api/latest', function (request, response) {
+    console.log(`${__dirname}/posts/`)
+    utils.readFiles(`${__dirname}/posts/`, function (data) {
+        const posts = Object.values(data)
+        let post = posts[posts.length - 1]
+        post = post.split('\n')[0].replace('Title:', '')
+        console.log(post.split('\n')[0])
+        response.send(post)
+    })
+})
 
 
 // HERE COMES DAT BOI
