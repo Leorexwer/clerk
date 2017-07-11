@@ -527,10 +527,16 @@ app.get('/api/latest', function (request, response) {
     console.log(`${__dirname}/posts/`)
     utils.readFiles(`${__dirname}/posts/`, function (data) {
         const posts = Object.values(data)
-        let post = posts[posts.length - 1]
-        post = post.split('\n')[0].replace('Title:', '')
-        console.log(post.split('\n')[0])
-        response.send(post)
+
+        let post = posts[posts.length - 1].split('\n')
+
+        const title = post[0].replace('Title:', '')
+        const timestamp = post[1].replace('Date:', '').trim()
+
+        response.json({
+            title,
+            timestamp
+        })
     })
 })
 
